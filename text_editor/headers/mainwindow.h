@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtWidgets>
 
 
 namespace Ui
@@ -19,9 +20,12 @@ public:
 
 private slots:
     void on_action_open_triggered();
+    void on_action_save_triggered();
 
 private:
     Ui::MainWindow *ui;
+
+    QString current_filename;
 
 };
 
