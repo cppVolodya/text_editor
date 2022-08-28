@@ -42,7 +42,7 @@ public:
     QStatusBar *status_bar;
     QMenuBar *menu_bar;
     QMenu *menu_file;
-    QMenu *menuEdit;
+    QMenu *menu_edit;
     QMenu *menu_format;
 
     void setupUi(QMainWindow *MainWindow)
@@ -51,7 +51,7 @@ public:
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(1000, 500);
         QIcon icon;
-        icon.addFile(QString::fromUtf8("../../../../../../../../Desktop/ico.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/images/.ico/main_window_title.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         action_open = new QAction(MainWindow);
         action_open->setObjectName(QString::fromUtf8("action_open"));
@@ -61,10 +61,13 @@ public:
         action_exit->setObjectName(QString::fromUtf8("action_exit"));
         action_undo = new QAction(MainWindow);
         action_undo->setObjectName(QString::fromUtf8("action_undo"));
+        action_undo->setIconVisibleInMenu(false);
         action_cut = new QAction(MainWindow);
         action_cut->setObjectName(QString::fromUtf8("action_cut"));
+        action_cut->setEnabled(false);
         action_copy = new QAction(MainWindow);
         action_copy->setObjectName(QString::fromUtf8("action_copy"));
+        action_copy->setEnabled(false);
         action_paste = new QAction(MainWindow);
         action_paste->setObjectName(QString::fromUtf8("action_paste"));
         action_delete = new QAction(MainWindow);
@@ -81,6 +84,10 @@ public:
         horizontal_layout->setContentsMargins(0, 0, 0, 0);
         plain_text_edit = new QPlainTextEdit(central_widget);
         plain_text_edit->setObjectName(QString::fromUtf8("plain_text_edit"));
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Consolas")});
+        font.setPointSize(11);
+        plain_text_edit->setFont(font);
         plain_text_edit->setFrameShape(QFrame::NoFrame);
         plain_text_edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         plain_text_edit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -98,25 +105,25 @@ public:
         menu_bar->setFocusPolicy(Qt::WheelFocus);
         menu_file = new QMenu(menu_bar);
         menu_file->setObjectName(QString::fromUtf8("menu_file"));
-        menuEdit = new QMenu(menu_bar);
-        menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
+        menu_edit = new QMenu(menu_bar);
+        menu_edit->setObjectName(QString::fromUtf8("menu_edit"));
         menu_format = new QMenu(menu_bar);
         menu_format->setObjectName(QString::fromUtf8("menu_format"));
         MainWindow->setMenuBar(menu_bar);
 
         menu_bar->addAction(menu_file->menuAction());
-        menu_bar->addAction(menuEdit->menuAction());
+        menu_bar->addAction(menu_edit->menuAction());
         menu_bar->addAction(menu_format->menuAction());
         menu_file->addAction(action_open);
         menu_file->addAction(action_save);
         menu_file->addSeparator();
         menu_file->addAction(action_exit);
-        menuEdit->addAction(action_undo);
-        menuEdit->addSeparator();
-        menuEdit->addAction(action_cut);
-        menuEdit->addAction(action_copy);
-        menuEdit->addAction(action_paste);
-        menuEdit->addAction(action_delete);
+        menu_edit->addAction(action_undo);
+        menu_edit->addSeparator();
+        menu_edit->addAction(action_cut);
+        menu_edit->addAction(action_copy);
+        menu_edit->addAction(action_paste);
+        menu_edit->addAction(action_delete);
         menu_format->addAction(action_font);
         menu_format->addAction(action_syntax_highlighting);
 
@@ -137,9 +144,9 @@ public:
         action_paste->setText(QCoreApplication::translate("MainWindow", "Paste", nullptr));
         action_delete->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         action_font->setText(QCoreApplication::translate("MainWindow", "Font...", nullptr));
-        action_syntax_highlighting->setText(QCoreApplication::translate("MainWindow", "syntax highlighting", nullptr));
+        action_syntax_highlighting->setText(QCoreApplication::translate("MainWindow", "Syntax highlighting", nullptr));
         menu_file->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
-        menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
+        menu_edit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
         menu_format->setTitle(QCoreApplication::translate("MainWindow", "Format", nullptr));
     } // retranslateUi
 
