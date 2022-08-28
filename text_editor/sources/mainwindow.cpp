@@ -61,3 +61,8 @@ void MainWindow::on_action_save_triggered()
         output_file.write(ui->plain_text_edit->toPlainText().toLocal8Bit());
     }
 }
+
+void MainWindow::on_action_exit_triggered()
+{
+    QApplication::quit();
+}
