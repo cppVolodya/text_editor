@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QtWidgets>
+
+#include "status_bar.h"
 
 
 namespace Ui
@@ -10,7 +11,7 @@ namespace Ui
     class MainWindow;
 }
 
-class MainWindow :public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -20,24 +21,27 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_action_open_triggered();
-    void on_action_save_triggered();
-    void on_action_exit_triggered();
+    void OnActionOpenTriggered              ();
+    void OnActionSaveTriggered              ();
 
-    void on_action_undo_triggered  ();
-    void on_action_cut_triggered   ();
-    void on_action_copy_triggered  ();
-    void on_action_paste_triggered ();
-    void on_action_delete_triggered();
+    void OnActionCutTriggered               ();
+    void OnActionUndoTriggered              ();
+    void OnActionCopyTriggered              ();
+    void OnActionPasteTriggered             ();
+    void OnActionDeleteTriggered            ();
 
-    void on_action_font_triggered               ();
-    void on_action_syntax_highlighting_triggered();
+    void OnActionFontTriggered              ();
+    void OnActionSyntaxHighlightingTriggered();
+
+    void CurrentCursorPosition              ();
+
+signals:
+    void cursorPositionChanged(const QTextCursor&);
 
 private:
     Ui::MainWindow *ui;
 
     QString current_filename;
-
 };
 
 #endif // MAINWINDOW_H

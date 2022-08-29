@@ -7,14 +7,43 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    StatusBar *status_bar = new StatusBar;
+    this->setStatusBar(status_bar);
+
+    connect(ui->action_open,   &QAction   ::triggered,
+            this,              &MainWindow::OnActionOpenTriggered);
+    connect(ui->action_save,   &QAction   ::triggered,
+            this,              &MainWindow::OnActionSaveTriggered);
+
+    connect(ui->action_exit,   &QAction     ::triggered,
+            this,              &QApplication::quit);
+    connect(ui->action_cut,    &QAction     ::triggered,
+            this,              &MainWindow  ::OnActionCutTriggered);
+    connect(ui->action_undo,   &QAction     ::triggered,
+            this,              &MainWindow  ::OnActionUndoTriggered);
+    connect(ui->action_copy,   &QAction     ::triggered,
+            this,              &MainWindow  ::OnActionCopyTriggered);
+    connect(ui->action_paste,  &QAction     ::triggered,
+            this,              &MainWindow  ::OnActionPasteTriggered);
+    connect(ui->action_delete, &QAction     ::triggered,
+            this,              &MainWindow  ::OnActionDeleteTriggered);
+
+    connect(ui->action_font,   &QAction   ::triggered,
+            this,              &MainWindow::OnActionFontTriggered);
+    connect(ui->action_syntax_highlighting, &QAction   ::triggered,
+            this,                           &MainWindow::OnActionSyntaxHighlightingTriggered);
+
     connect(ui->text_edit,   &QTextEdit::undoAvailable,
             ui->action_undo, &QAction  ::setEnabled);
-
     connect(ui->text_edit,   &QTextEdit::copyAvailable,
             ui->action_cut,  &QAction  ::setEnabled);
-
     connect(ui->text_edit,   &QTextEdit::copyAvailable,
             ui->action_copy, &QAction  ::setEnabled);
+
+    connect(ui->text_edit, SIGNAL( cursorPositionChanged() ),
+            this,          SLOT  ( CurrentCursorPosition() ));
+    connect(this,          SIGNAL( cursorPositionChanged   (const QTextCursor&) ),
+            status_bar,    SLOT  ( SetValueForLineAndColumn(const QTextCursor&) ));
 }
 
 MainWindow::~MainWindow()
@@ -22,7 +51,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_action_open_triggered()
+void MainWindow::CurrentCursorPosition()
+{
+    emit cursorPositionChanged(ui->text_edit->textCursor());
+}
+
+void MainWindow::OnActionOpenTriggered()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Open");
     if(filename.isEmpty())
@@ -40,7 +74,7 @@ void MainWindow::on_action_open_triggered()
     ui->text_edit->setPlainText( input_file.readAll() );
 }
 
-void MainWindow::on_action_save_triggered()
+void MainWindow::OnActionSaveTriggered()
 {
     if( current_filename.isEmpty() )
     {
@@ -71,44 +105,39 @@ void MainWindow::on_action_save_triggered()
     }
 }
 
-void MainWindow::on_action_exit_triggered()
-{
-    QApplication::quit();
-}
-
-void MainWindow::on_action_undo_triggered()
+void MainWindow::OnActionUndoTriggered()
 {
     ui->text_edit->undo();
 }
 
-void MainWindow::on_action_cut_triggered()
+void MainWindow::OnActionCutTriggered()
 {
     ui->text_edit->cut();
 }
 
-void MainWindow::on_action_copy_triggered()
+void MainWindow::OnActionCopyTriggered()
 {
     ui->text_edit->copy();
 }
 
-void MainWindow::on_action_paste_triggered()
+void MainWindow::OnActionPasteTriggered()
 {
     ui->text_edit->paste();
 }
 
-void MainWindow::on_action_delete_triggered()
+void MainWindow::OnActionDeleteTriggered()
 {
-    QKeyEvent *key_press = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Delete, Qt::NoModifier);
+    QKeyEvent *key_press = new QKeyEvent(QEvent::KeyPress, Qt::Key_Delete, Qt::NoModifier);
     QApplication::postEvent(ui->text_edit, key_press);
 }
 
-void MainWindow::on_action_font_triggered()
+void MainWindow::OnActionFontTriggered()
 {
     bool check{ true };
-    ui->text_edit->setCurrentFont(QFontDialog::getFont(&check, QFont(), this, "Font..."));
+    ui->text_edit->setCurrentFont( QFontDialog::getFont(&check, QFont(), this, "Font...") );
 }
 
-void MainWindow::on_action_syntax_highlighting_triggered()
+void MainWindow::OnActionSyntaxHighlightingTriggered()
 {
-    ui->text_edit->setTextColor(QColorDialog::getColor(QColor(), this, "Syntax highlighting"));
+    ui->text_edit->setTextColor( QColorDialog::getColor(QColor(), this, "Syntax highlighting") );
 }
