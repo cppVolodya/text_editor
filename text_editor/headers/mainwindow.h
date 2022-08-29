@@ -30,6 +30,9 @@ private slots:
     void on_action_paste_triggered ();
     void on_action_delete_triggered();
 
+    void on_action_font_triggered               ();
+    void on_action_syntax_highlighting_triggered();
+
 private:
     Ui::MainWindow *ui;
 

@@ -101,3 +101,14 @@ void MainWindow::on_action_delete_triggered()
     QKeyEvent *key_press = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Delete, Qt::NoModifier);
     QApplication::postEvent(ui->text_edit, key_press);
 }
+
+void MainWindow::on_action_font_triggered()
+{
+    bool check{ true };
+    ui->text_edit->setCurrentFont(QFontDialog::getFont(&check, QFont(), this, "Font..."));
+}
+
+void MainWindow::on_action_syntax_highlighting_triggered()
+{
+    ui->text_edit->setTextColor(QColorDialog::getColor(QColor(), this, "Syntax highlighting"));
+}
