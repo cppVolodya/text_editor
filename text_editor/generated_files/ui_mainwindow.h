@@ -17,8 +17,8 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -38,7 +38,7 @@ public:
     QAction *action_syntax_highlighting;
     QWidget *central_widget;
     QHBoxLayout *horizontal_layout;
-    QPlainTextEdit *plain_text_edit;
+    QTextEdit *text_edit;
     QStatusBar *status_bar;
     QMenuBar *menu_bar;
     QMenu *menu_file;
@@ -61,6 +61,7 @@ public:
         action_exit->setObjectName(QString::fromUtf8("action_exit"));
         action_undo = new QAction(MainWindow);
         action_undo->setObjectName(QString::fromUtf8("action_undo"));
+        action_undo->setEnabled(false);
         action_undo->setIconVisibleInMenu(false);
         action_cut = new QAction(MainWindow);
         action_cut->setObjectName(QString::fromUtf8("action_cut"));
@@ -82,18 +83,14 @@ public:
         horizontal_layout->setSpacing(0);
         horizontal_layout->setObjectName(QString::fromUtf8("horizontal_layout"));
         horizontal_layout->setContentsMargins(0, 0, 0, 0);
-        plain_text_edit = new QPlainTextEdit(central_widget);
-        plain_text_edit->setObjectName(QString::fromUtf8("plain_text_edit"));
-        QFont font;
-        font.setFamilies({QString::fromUtf8("Consolas")});
-        font.setPointSize(11);
-        plain_text_edit->setFont(font);
-        plain_text_edit->setFrameShape(QFrame::NoFrame);
-        plain_text_edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        plain_text_edit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        plain_text_edit->setLineWrapMode(QPlainTextEdit::NoWrap);
+        text_edit = new QTextEdit(central_widget);
+        text_edit->setObjectName(QString::fromUtf8("text_edit"));
+        text_edit->setFrameShape(QFrame::NoFrame);
+        text_edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        text_edit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        text_edit->setLineWrapMode(QTextEdit::NoWrap);
 
-        horizontal_layout->addWidget(plain_text_edit);
+        horizontal_layout->addWidget(text_edit);
 
         MainWindow->setCentralWidget(central_widget);
         status_bar = new QStatusBar(MainWindow);

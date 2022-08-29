@@ -35,13 +35,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QPlainTextEdit" name="plain_text_edit">
-      <property name="font">
-       <font>
-        <family>Consolas</family>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
+     <widget class="QTextEdit" name="text_edit">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -52,7 +46,7 @@
        <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
       <property name="lineWrapMode">
-       <enum>QPlainTextEdit::NoWrap</enum>
+       <enum>QTextEdit::NoWrap</enum>
       </property>
      </widget>
     </item>
@@ -118,6 +112,9 @@
    </property>
   </action>
   <action name="action_undo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Undo</string>
    </property>
