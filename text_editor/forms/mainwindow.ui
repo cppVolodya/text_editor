@@ -36,6 +36,11 @@
     </property>
     <item>
      <widget class="QTextEdit" name="text_edit">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -52,7 +57,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="status_bar"/>
   <widget class="QMenuBar" name="menu_bar">
    <property name="geometry">
     <rect>

@@ -17,7 +17,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -39,7 +38,6 @@ public:
     QWidget *central_widget;
     QHBoxLayout *horizontal_layout;
     QTextEdit *text_edit;
-    QStatusBar *status_bar;
     QMenuBar *menu_bar;
     QMenu *menu_file;
     QMenu *menu_edit;
@@ -85,6 +83,9 @@ public:
         horizontal_layout->setContentsMargins(0, 0, 0, 0);
         text_edit = new QTextEdit(central_widget);
         text_edit->setObjectName(QString::fromUtf8("text_edit"));
+        QFont font;
+        font.setPointSize(11);
+        text_edit->setFont(font);
         text_edit->setFrameShape(QFrame::NoFrame);
         text_edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         text_edit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -93,9 +94,6 @@ public:
         horizontal_layout->addWidget(text_edit);
 
         MainWindow->setCentralWidget(central_widget);
-        status_bar = new QStatusBar(MainWindow);
-        status_bar->setObjectName(QString::fromUtf8("status_bar"));
-        MainWindow->setStatusBar(status_bar);
         menu_bar = new QMenuBar(MainWindow);
         menu_bar->setObjectName(QString::fromUtf8("menu_bar"));
         menu_bar->setGeometry(QRect(0, 0, 1000, 26));
