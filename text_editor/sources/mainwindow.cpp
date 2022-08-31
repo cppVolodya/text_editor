@@ -68,6 +68,21 @@ MainWindow::~MainWindow()
     delete status_bar;
 }
 
+void MainWindow::wheelEvent(QWheelEvent *wheel_event)
+{
+    if(wheel_event->modifiers() == Qt::CTRL)
+    {
+        if(wheel_event->angleDelta().ry() > 0)
+        {
+            ZoomInTextEditorScale();
+        }
+        else
+        {
+            ZoomOutTextEditorScale();
+        }
+    }
+}
+
 void MainWindow::CurrentCursorPosition()
 {
     emit cursorPositionChanged(ui->text_edit->textCursor());

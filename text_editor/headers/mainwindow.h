@@ -20,6 +20,9 @@ public:
 
     ~MainWindow();
 
+protected:
+    void wheelEvent(QWheelEvent *) override;
+
 signals:
     void cursorPositionChanged(const QTextCursor &);
 
