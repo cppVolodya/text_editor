@@ -1,2 +1,6 @@
-*.exe
-random_text.txt
+# ignore files
+*.pro.user
+
+# ignore directories
+build/
+program/
