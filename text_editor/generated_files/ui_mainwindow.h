@@ -77,19 +77,24 @@ public:
         action_syntax_highlighting->setObjectName(QString::fromUtf8("action_syntax_highlighting"));
         central_widget = new QWidget(MainWindow);
         central_widget->setObjectName(QString::fromUtf8("central_widget"));
+        QFont font;
+        font.setPointSize(11);
+        central_widget->setFont(font);
         horizontal_layout = new QHBoxLayout(central_widget);
         horizontal_layout->setSpacing(0);
         horizontal_layout->setObjectName(QString::fromUtf8("horizontal_layout"));
         horizontal_layout->setContentsMargins(0, 0, 0, 0);
         text_edit = new QTextEdit(central_widget);
         text_edit->setObjectName(QString::fromUtf8("text_edit"));
-        QFont font;
-        font.setPointSize(11);
-        text_edit->setFont(font);
+        QFont font1;
+        font1.setFamilies({QString::fromUtf8("Segoe UI")});
+        font1.setPointSize(12);
+        text_edit->setFont(font1);
         text_edit->setFrameShape(QFrame::NoFrame);
         text_edit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         text_edit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         text_edit->setLineWrapMode(QTextEdit::NoWrap);
+        text_edit->setTabStopDistance(40.000000000000000);
 
         horizontal_layout->addWidget(text_edit);
 

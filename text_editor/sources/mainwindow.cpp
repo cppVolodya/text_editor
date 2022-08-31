@@ -3,11 +3,13 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow)
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->text_edit->installEventFilter(this);
 
-    StatusBar *status_bar = new StatusBar;
+    status_bar = new StatusBar;
     this->setStatusBar(status_bar);
 
     connect(ui->action_open,   &QAction   ::triggered,
@@ -28,8 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_delete, &QAction     ::triggered,
             this,              &MainWindow  ::OnActionDeleteTriggered);
 
-    connect(ui->action_font,   &QAction   ::triggered,
-            this,              &MainWindow::OnActionFontTriggered);
+    connect(ui->action_font,                &QAction   ::triggered,
+            this,                           &MainWindow::OnActionFontTriggered);
     connect(ui->action_syntax_highlighting, &QAction   ::triggered,
             this,                           &MainWindow::OnActionSyntaxHighlightingTriggered);
 
@@ -42,13 +44,51 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->text_edit, SIGNAL( cursorPositionChanged() ),
             this,          SLOT  ( CurrentCursorPosition() ));
-    connect(this,          SIGNAL( cursorPositionChanged   (const QTextCursor&) ),
-            status_bar,    SLOT  ( SetValueForLineAndColumn(const QTextCursor&) ));
+    connect(this,          SIGNAL( cursorPositionChanged           (QTextCursor) ),
+            status_bar,    SLOT  ( SetValueForCursorPositionOnLabel(QTextCursor) ));
+
+    connect(status_bar,    SIGNAL( TextEditorZoomSizeChanged (int) ),
+            status_bar,    SLOT  ( SetScaleValueForTextEditor(int) ));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete status_bar;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    QKeyCombination key_combination = event->keyCombination();
+
+    ZoomInTextEditorScale (key_combination);
+    ZoomOutTextEditorScale(key_combination);
+}
+
+bool MainWindow::keyPressEvent(QKeyEvent *event, int)
+{
+    QKeyCombination key_combination = event->keyCombination();
+
+    return ZoomInTextEditorScale (key_combination) | ZoomOutTextEditorScale(key_combination);
+}
+
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if(object == ui->text_edit && event->type() == QEvent::KeyPress)
+    {
+        if( keyPressEvent(static_cast<QKeyEvent *>(event), int()) )
+        {
+            return true;
+        }
+
+        if( StatusBar::MAX_SCALE_VALUE_FOR_TEXT_EDITOR == status_bar->GetTextEditorScaleValue() |
+            StatusBar::MIN_SCALE_VALUE_FOR_TEXT_EDITOR == status_bar->GetTextEditorScaleValue() )
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void MainWindow::CurrentCursorPosition()
@@ -140,4 +180,41 @@ void MainWindow::OnActionFontTriggered()
 void MainWindow::OnActionSyntaxHighlightingTriggered()
 {
     ui->text_edit->setTextColor( QColorDialog::getColor(QColor(), this, "Syntax highlighting") );
+}
+
+bool MainWindow::ZoomInTextEditorScale(const QKeyCombination &key_combination)
+{
+    if(   StatusBar::MAX_SCALE_VALUE_FOR_TEXT_EDITOR > status_bar->GetTextEditorScaleValue()
+            &&
+        ((key_combination.key() == Qt::Key_Plus) |
+         (key_combination.key() == Qt::Key_Equal))
+            &&
+        ((key_combination.keyboardModifiers() == Qt::ControlModifier) |
+         (key_combination.keyboardModifiers() == (Qt::ControlModifier | Qt::KeypadModifier))) )
+    {
+        ui->text_edit->zoomIn();
+        emit status_bar->TextEditorZoomSizeChanged(step_zoom_in);
+
+        return true;
+    }
+
+     return false;
+}
+
+bool MainWindow::ZoomOutTextEditorScale(const QKeyCombination &key_combination)
+{
+    if(  StatusBar::MIN_SCALE_VALUE_FOR_TEXT_EDITOR < status_bar->GetTextEditorScaleValue()
+            &&
+        (key_combination.key() == Qt::Key_Minus)
+            &&
+        ((key_combination.keyboardModifiers() == Qt::ControlModifier) |
+         (key_combination.keyboardModifiers() == (Qt::ControlModifier | Qt::KeypadModifier)) ) )
+    {
+        ui->text_edit->zoomOut();
+        emit status_bar->TextEditorZoomSizeChanged(step_zoom_out);
+
+        return true;
+    }
+
+    return false;
 }
