@@ -7,7 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->text_edit->installEventFilter(this);
 
     status_bar = new StatusBar;
     this->setStatusBar(status_bar);

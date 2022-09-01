@@ -10,8 +10,15 @@ StatusBar::StatusBar(QWidget *parrent) :
     text_editor_scale_label = new QLabel("100%"       );
 
     this->addPermanentWidget(emptiness_label        , 10);
-    this->addPermanentWidget(cursor_position_label  ,  1);
-    this->addPermanentWidget(text_editor_scale_label,  1);
+    this->addPermanentWidget(cursor_position_label  , 2);
+    this->addPermanentWidget(text_editor_scale_label, 1);
+
+    this->setStyleSheet("QStatusBar"
+                        "{"
+                            "border-top-width: 1px    ;"
+                            "border-top-style: solid  ;"
+                            "border-top-color: #d7d7d7;"
+                        "}");
 }
 
 StatusBar::~StatusBar()
