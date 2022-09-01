@@ -102,7 +102,13 @@ public:
         menu_bar = new QMenuBar(MainWindow);
         menu_bar->setObjectName(QString::fromUtf8("menu_bar"));
         menu_bar->setGeometry(QRect(0, 0, 1000, 26));
-        menu_bar->setFocusPolicy(Qt::WheelFocus);
+        menu_bar->setStyleSheet(QString::fromUtf8("QMenuBar\n"
+"{\n"
+"	border-bottom-width: 1px;\n"
+"	border-bottom-style : solid;\n"
+"	border-bottom-color: #f0f0f0;\n"
+"	background-color    :  white;\n"
+"}"));
         menu_file = new QMenu(menu_bar);
         menu_file->setObjectName(QString::fromUtf8("menu_file"));
         menu_edit = new QMenu(menu_bar);
@@ -145,6 +151,11 @@ public:
         action_delete->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         action_font->setText(QCoreApplication::translate("MainWindow", "Font...", nullptr));
         action_syntax_highlighting->setText(QCoreApplication::translate("MainWindow", "Syntax highlighting", nullptr));
+        text_edit->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Segoe UI'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", nullptr));
         menu_file->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menu_edit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
         menu_format->setTitle(QCoreApplication::translate("MainWindow", "Format", nullptr));
