@@ -1,4 +1,4 @@
-#include "status_bar.h"
+#include "headers/status_bar.h"
 
 
 StatusBar::StatusBar(QWidget *parrent) :
