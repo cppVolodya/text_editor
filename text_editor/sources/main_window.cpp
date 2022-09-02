@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     shortcut_alternative_ctrl_plus  = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Equal), this);
     shortcut_ctrl_minus             = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Minus), this);
 
+    connect(ui->action_new,    &QAction   ::triggered,
+            this,              &MainWindow::OnActionNewTriggered);
     connect(ui->action_open,   &QAction   ::triggered,
             this,              &MainWindow::OnActionOpenTriggered);
     connect(ui->action_save,   &QAction   ::triggered,
@@ -87,39 +89,53 @@ void MainWindow::CurrentCursorPosition()
     emit cursorPositionChanged(ui->text_edit->textCursor());
 }
 
+void MainWindow::OnActionNewTriggered()
+{
+    ui->text_edit->clear();
+    this->setWindowTitle("Untitled - Notepad");
+    current_filename.clear();
+}
+
 void MainWindow::OnActionOpenTriggered()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Open");
-    if(filename.isEmpty())
+    QString path_to_file = QFileDialog::getOpenFileName(this, "Open");
+    if(path_to_file.isEmpty())
     {
         return;
     }
 
-    current_filename = filename;
-    QFile input_file{ filename };
-    if( !input_file.open(QIODevice::ReadOnly) )
+    current_filename = path_to_file;
+    QFile input_file{ path_to_file };
+    if( !input_file.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
-        QMessageBox::warning(this, "Warning", "Failed to open file for reading data!");
+        QMessageBox::warning(this, "Warning", "Failed to open file for reading data: " +
+                                    input_file.errorString());
     }
 
+
     ui->text_edit->setPlainText( input_file.readAll() );
+
+    int position = path_to_file.lastIndexOf(QChar('/')) + 1;
+    QString filename = path_to_file.right(path_to_file.size() - position);
+    this->setWindowTitle(filename + " - Notepad");
 }
 
 void MainWindow::OnActionSaveTriggered()
 {
     if( current_filename.isEmpty() )
     {
-        QString filename = QFileDialog::getSaveFileName(this, "Save");
-        if(filename.isEmpty())
+        QString path_to_file = QFileDialog::getSaveFileName(this, "Save");
+        if(path_to_file.isEmpty())
         {
             return;
         }
 
-        current_filename = filename;
-        QFile output_file{ filename };
-        if( !output_file.open(QIODevice::WriteOnly) )
+        current_filename = path_to_file;
+        QFile output_file{ path_to_file };
+        if( !output_file.open(QIODevice::WriteOnly | QIODevice::Text) )
         {
-            QMessageBox::warning(this, "Warning", "Could not open file for writing data!");
+            QMessageBox::warning(this, "Warning", "Could not open file for writing data: " +
+                                        output_file.errorString());
         }
 
         output_file.write( ui->text_edit->toPlainText().toLocal8Bit() );
@@ -127,9 +143,10 @@ void MainWindow::OnActionSaveTriggered()
     else
     {
         QFile output_file{ current_filename };
-        if( !output_file.open(QIODevice::WriteOnly) )
+        if( !output_file.open(QIODevice::WriteOnly | QIODevice::Text) )
         {
-            QMessageBox::warning(this, "Warning", "Could not open file for writing data!");
+            QMessageBox::warning(this, "Warning", "Could not open file for writing data: " +
+                                        output_file.errorString());
         }
 
         output_file.write( ui->text_edit->toPlainText().toLocal8Bit() );
@@ -165,7 +182,12 @@ void MainWindow::OnActionDeleteTriggered()
 void MainWindow::OnActionFontTriggered()
 {
     bool check{ true };
-    ui->text_edit->setCurrentFont( QFontDialog::getFont(&check, QFont(), this, "Font...") );
+    QFont font = QFontDialog::getFont(&check, QFont(), this, "Font...");
+
+    if(check)
+    {
+        ui->text_edit->setCurrentFont(font);
+    }
 }
 
 void MainWindow::OnActionSyntaxHighlightingTriggered()

@@ -27,6 +27,7 @@ signals:
     void cursorPositionChanged(const QTextCursor &);
 
 private slots:
+    void OnActionNewTriggered               ();
     void OnActionOpenTriggered              ();
     void OnActionSaveTriggered              ();
 

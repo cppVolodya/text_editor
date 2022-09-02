@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Notepad</string>
+   <string>Untitled - Notepad</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resource.qrc">
+   <iconset resource="../resource.qrc">
     <normaloff>:/images/.ico/main_window_title.ico</normaloff>:/images/.ico/main_window_title.ico</iconset>
   </property>
   <widget class="QWidget" name="central_widget">
@@ -95,6 +95,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="action_new"/>
     <addaction name="action_open"/>
     <addaction name="action_save"/>
     <addaction name="separator"/>
@@ -184,9 +185,14 @@ p, li { white-space: pre-wrap; }
     <string>Syntax highlighting</string>
    </property>
   </action>
+  <action name="action_new">
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="../resource.qrc"/>
  </resources>
  <connections/>
 </ui>
