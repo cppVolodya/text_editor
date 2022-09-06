@@ -66,7 +66,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete status_bar;
 }
 
 void MainWindow::wheelEvent(QWheelEvent *wheel_event)

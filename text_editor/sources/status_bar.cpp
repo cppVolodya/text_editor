@@ -21,13 +21,6 @@ StatusBar::StatusBar(QWidget *parrent) :
                         "}");
 }
 
-StatusBar::~StatusBar()
-{
-    delete emptiness_label        ;
-    delete cursor_position_label  ;
-    delete text_editor_scale_label;
-}
-
 void StatusBar::SetValueForCursorPositionOnLabel(const QTextCursor& text_cursor)
 {
     this->cursor_position_label->setText("Ln "    + QString::number(text_cursor.blockNumber () + 1) +

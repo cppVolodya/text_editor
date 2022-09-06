@@ -15,8 +15,6 @@ public:
 public:
     explicit StatusBar(QWidget *parent = nullptr);
 
-    ~StatusBar();
-
     inline int GetTextEditorScaleValue() const
     {
         return text_editor_scale_value;
