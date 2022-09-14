@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->text_edit->viewport()->installEventFilter(this);
 
     status_bar = new StatusBar;
     this->setStatusBar(status_bar);
@@ -70,7 +71,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::wheelEvent(QWheelEvent *wheel_event)
 {
-    if(wheel_event->modifiers() == Qt::CTRL)
+    if(wheel_event->modifiers() == Qt::ControlModifier)
     {
         if(wheel_event->angleDelta().ry() > 0)
         {
@@ -81,6 +82,21 @@ void MainWindow::wheelEvent(QWheelEvent *wheel_event)
             ZoomOutTextEditorScale();
         }
     }
+}
+
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    QWheelEvent *wheel_event = static_cast<QWheelEvent *>(event);
+
+    if(object                   == ui->text_edit->viewport() &&
+       event->type()            == QEvent::Wheel             &&
+       wheel_event->modifiers() == Qt::ControlModifier          )
+    {
+        wheelEvent(wheel_event);
+        return true;
+    }
+
+    return false;
 }
 
 void MainWindow::CurrentCursorPosition()

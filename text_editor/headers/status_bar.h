@@ -12,6 +12,13 @@ public:
     static constexpr int MIN_SCALE_VALUE_FOR_TEXT_EDITOR =  10;
     static constexpr int MAX_SCALE_VALUE_FOR_TEXT_EDITOR = 500;
 
+private:
+    QLabel *emptiness_label        ;
+    QLabel *cursor_position_label  ;
+    QLabel *text_editor_scale_label;
+
+    int text_editor_scale_value;
+
 public:
     explicit StatusBar(QWidget *parent = nullptr);
 
@@ -27,13 +34,6 @@ public slots:
     void SetValueForCursorPositionOnLabel(const QTextCursor&);
 
     void SetScaleValueForTextEditor(const int);
-
-private:
-    QLabel *emptiness_label        ;
-    QLabel *cursor_position_label  ;
-    QLabel *text_editor_scale_label;
-
-    int text_editor_scale_value;
 
 };
 
