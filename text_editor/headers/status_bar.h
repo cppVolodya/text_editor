@@ -1,5 +1,5 @@
-#ifndef STATUSBAR_H
-#define STATUSBAR_H
+#ifndef STATUS_BAR_H
+#define STATUS_BAR_H
 
 #include <QtWidgets>
 
@@ -37,4 +37,4 @@ public slots:
 
 };
 
-#endif // STATUSBAR_H
+#endif // STATU_SBAR_H
