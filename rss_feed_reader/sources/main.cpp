@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include "headers/main_window.h"
+#include "main_window.h"
 
 
 int main(int argc, char *argv[])
@@ -10,5 +10,5 @@ int main(int argc, char *argv[])
     MainWindow main_window;
     main_window.show();
 
-    return application.exec();
+    return QApplication::exec();
 }
